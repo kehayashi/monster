@@ -5,7 +5,7 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/storeLead', 'LeadController@storeLead');
+Route::post('/storeLead', 'LeadController@storeLead');
 
 Route::get('/updateLeadFamilia', 'LeadController@updateLeadFamilia');
 
