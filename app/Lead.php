@@ -20,6 +20,6 @@ class Lead extends Model {
 				'email',
         'tipoFamilia',
 				'regiao'
-        'valorRenda'
+        'valorRenda',
         );
 }
