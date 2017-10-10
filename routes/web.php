@@ -2,7 +2,7 @@
 
 
 Route::get('/', function () {
-    return view('home');
+    return view('index');
 });
 
 Route::get('/storeLead', 'LeadController@storeLead');
