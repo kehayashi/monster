@@ -12,7 +12,7 @@ class LeadTable extends Migration
           $table->increments('id');
           $table->decimal('valorParcela');
           $table->decimal('valorImovel');
-          $table->string('name');
+          $table->string('nome');
           $table->string('email')->unique();
           $table->string('tipoFamilia');
           $table->string('regiao');
