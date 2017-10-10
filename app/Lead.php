@@ -19,7 +19,7 @@ class Lead extends Model {
 				'nome',
 				'email',
         'tipoFamilia',
-				'regiao'
+				'regiao',
         'valorRenda',
         );
 }
