@@ -5,12 +5,12 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::post('/storeLead', 'LeadController@storeLead');
+Route::get('/storeLead', 'LeadController@storeLead');
 
-Route::post('/updateLeadFamilia', 'LeadController@updateLeadFamilia');
+Route::get('/updateLeadFamilia', 'LeadController@updateLeadFamilia');
 
-Route::post('/updateLeadRenda', 'LeadController@updateLeadRenda');
+Route::get('/updateLeadRenda', 'LeadController@updateLeadRenda');
 
-Route::post('/updateLeadRegiao', 'LeadController@updateLeadRegiao');
+Route::get('/updateLeadRegiao', 'LeadController@updateLeadRegiao');
 
-Route::post('/getLeads', 'LeadController@getLeads');
+Route::get('/getLeads', 'LeadController@getLeads');
