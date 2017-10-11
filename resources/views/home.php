@@ -217,9 +217,13 @@
                 </div>
             </div>
         </div>
-        <div class="progress">
-            <div class="progress-bar progress-bar-warning  progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
-                <span class="sr-only">25% Completo</span>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning  progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                        <span class="sr-only">25% Completo</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -395,12 +399,14 @@
                   </g>
                 </svg>
             </div>
-
-
         </div>
-        <div class="progress">
-            <div class="progress-bar progress-bar-warning  progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
-                <span class="sr-only">50% Completo</span>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning  progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                        <span class="sr-only">50% Completo</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
