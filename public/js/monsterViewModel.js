@@ -18,7 +18,7 @@ function monsterViewModel () {
     self.regiao = ko.observable(0);
     self.temErroNoNome = ko.observable(false); 
     self.temErroNoEmail = ko.observable(false);
-    self.resultadoDetalhesDistintos = ko.observableArray([]);
+    self.simulacoes = ko.observableArray([]);
     self.resultadoDetalhes = ko.observableArray([]);
     self.opcoesSelecionadas = ko.observableArray([]);
     self.dummyObservable = ko.observable();
@@ -119,7 +119,7 @@ function monsterViewModel () {
     }, this);
     self.casinha5AnosAtivo = ko.computed(function(){
         self.dummyObservable();
-        if (self.tipoDeFamilia() > 1){
+        if (self.tipoDeFamilia() > 2){
             return false;
         }
         if (!compararRenda(self.valorR$Parcela(), self.valorParcela5Anos(), self.valorR$Imovel())){
@@ -167,7 +167,7 @@ function monsterViewModel () {
     }, this);
     self.casinha10AnosAtivo = ko.computed(function(){
         self.dummyObservable();
-        if (self.tipoDeFamilia() > 1){
+        if (self.tipoDeFamilia() > 2){
             return false;
         }
         if (!compararRenda(self.valorR$Parcela(), self.valorParcela10Anos(), self.valorR$Imovel())){
@@ -215,7 +215,7 @@ function monsterViewModel () {
     }, this);
     self.casinha20AnosAtivo = ko.computed(function(){
         self.dummyObservable();
-        if (self.tipoDeFamilia() > 1){
+        if (self.tipoDeFamilia() > 2){
             return false;
         }
         if (!compararRenda(self.valorR$Parcela(), self.valorParcela20Anos(), self.valorR$Imovel())){
@@ -273,54 +273,35 @@ function monsterViewModel () {
     self.iniciarCadastro = function(valor){
         ehNomeValido();
         ehEmailValido();
-        if(!self.temErroNoNome() && !self.temErroNoEmail()) {
+        if(!self.temErroNoNome() && !self.temErroNoEmail()) {            
+            cadastrar();                        
             //proximoPasso();
-            cadastrar();
         }
     };
     self.setarTipoDeFamilia = function(tipo){
         var tipoDeFamilia = parseInt(tipo);
         self.tipoDeFamilia(tipoDeFamilia);
-        //proximoPasso();
         salvarTipoDeFamilia();
+        //proximoPasso();
     };
     self.setarRegiao = function(regiao){
         var regiaoDesejada = parseInt(regiao);
         self.regiao(regiao);
-        //proximoPasso();
         salvarRegiao();
+        //proximoPasso();
     };
     self.setarRenda = function(valor){
         var rendaInformada = parseFloat(valor);
         self.renda(rendaInformada);
         setarOpcoesSelecionadas();
-        //proximoPasso();
+        setarSimulacoes();
+        setarDetalhes();
         salvarRenda();
-    };
-    self.verDetalhes = function(valor){
-        self.resultadoDetalhesDistintos([]);
-        self.resultadoDetalhes([]);
-
-        if (self.tipoDeFamilia() === 1){
-            self.resultadoDetalhes.push("Você é solteiro, recomendamos uma casa pequena ou média (no máximo 2 quartos).")
-        }
-        if (self.tipoDeFamilia() === 2){
-            self.resultadoDetalhes.push("Você tem uma família pequena, recomendamos uma casa média (com 2 ou 3 quartos).")
-        }
-        if (self.tipoDeFamilia() === 3){
-            self.resultadoDetalhes.push("Você tem uma família média, recomendamos uma casa média (com 3 ou mais quartos).")
-        }
-        if (self.tipoDeFamilia() === 4){
-            self.resultadoDetalhes.push("Você tem uma família grande, recomendamos uma casa grande (com 4 ou mais quartos).")
-        }
+        //proximoPasso();
         
-        self.dummyObservable.notifySubscribers();
-        
-        var detalhes = self.resultadoDetalhes();
-        detalhes = detalhes.filter(function(item, pos) {
-            return detalhes.indexOf(item) == pos;
-        })
-        self.resultadoDetalhesDistintos(detalhes);
+    };   
+    self.reload = function(){
+        location.reload(true);
     };
     
     function proximoPasso(){
@@ -346,10 +327,10 @@ function monsterViewModel () {
         }
     }    
     function cadastrar(){
-        //var url = '127.0.0.1:8000/storeLead?valorParcela=' + self.valorR$Parcela() + '&valorImovel=' + self.valorR$Imovel() + '&nome=' + self.nome() + '&email=' + self.email();
         $.getJSON("/storeLead", {valorParcela: self.valorR$Parcela(), valorImovel: self.valorR$Imovel(), nome: self.nome(), email: self.email() })
             .done(function(result) {
                 self.id(result.id);
+                setAnalitycsPage('/pagina-familia');
                 proximoPasso();
             })
             .fail(function() {
@@ -372,10 +353,10 @@ function monsterViewModel () {
                 tipo = 'Casal com mais de um filho';
                 break;
         }
-        //var url = '127.0.0.1:8000/updateLeadFamilia?id=' + self.id() + '&tipoFamilia=' + tipo;
         $.getJSON("/updateLeadFamilia", {id: self.id(), tipoFamilia: tipo})
             .done(function(result) {
                 if (result.updated){
+                    setAnalitycsPage('/pagina-regiao');
                     proximoPasso();
                 }else{
                     alert('Ops. Algo errado não está certo. Tente novamente');
@@ -387,10 +368,10 @@ function monsterViewModel () {
     }  
     function salvarRegiao(){
         var regiaoSelecionada = regioes[self.regiao()];
-        //var url = '127.0.0.1:8000/updateLeadRegiao?id=' + self.id() + '&regiao=' + regiaoSelecionada;
         $.getJSON("/updateLeadRegiao", {id: self.id(), regiao: regiaoSelecionada})
             .done(function(result) {
                 if (result.updated){
+                    setAnalitycsPage('/pagina-renda');
                     proximoPasso();
                 }else{
                     alert('Ops. Algo errado não está certo. Tente novamente');
@@ -401,10 +382,10 @@ function monsterViewModel () {
             });
     }  
     function salvarRenda(){
-        //var url = '127.0.0.1:8000/updateLeadRenda?id=' + self.id() + '&renda=' + self.renda();
         $.getJSON("/updateLeadRenda", {id: self.id(), renda: self.renda()})
             .done(function(result) {
                 if (result.updated){
+                    setAnalitycsPage('/pagina-resultado');
                     proximoPasso();
                 }else{
                     alert('Ops. Algo errado não está certo. Tente novamente');
@@ -445,7 +426,6 @@ function monsterViewModel () {
         self.opcoesSelecionadas([]);
         if (self.valorR$Imovel() !== 0){
             self.opcoesSelecionadas.push('Valor do imóvel:  R$' + self.valorR$Imovel() + ',00');
-            self.opcoesSelecionadas.push('Valor da entrada: R$' + self.valorEntrada() + ',00');
         }else{
             self.opcoesSelecionadas.push('Valor da parcela: R$' + self.valorR$Parcela() + ',00')
         }
@@ -468,6 +448,63 @@ function monsterViewModel () {
         self.opcoesSelecionadas.push('Buscando imóveis na região: ' + regioes[self.regiao()]);
         self.opcoesSelecionadas.push('Possui uma renda de R$: ' + self.renda() + ',00');
 
+        if (self.tipoDeFamilia() === 1){
+            self.opcoesSelecionadas.push("Você é solteiro, recomendamos uma casa pequena ou média (no máximo 2 quartos).")
+        }
+        if (self.tipoDeFamilia() === 2){
+            self.opcoesSelecionadas.push("Você tem uma família pequena, recomendamos uma casa pequena ou média (de 1 até 3 quartos).")
+        }
+        if (self.tipoDeFamilia() === 3){
+            self.opcoesSelecionadas.push("Você tem uma família média, recomendamos uma casa média (com 3 ou mais quartos).")
+        }
+        if (self.tipoDeFamilia() === 4){
+            self.opcoesSelecionadas.push("Você tem uma família grande, recomendamos uma casa grande (com 4 ou mais quartos).")
+        }
+    }
+    function setarSimulacoes(){
+        self.simulacoes([]);
+        if (self.valorR$Imovel() !== 0){
+            self.simulacoes.push('Valor da entrada (20% do valor de imóvel): R$' + self.valorEntrada() + ',00');
+            self.simulacoes.push('Valor da parcela para compra em 5 anos: R$' + self.valorParcela5Anos() + ',00');
+            self.simulacoes.push('Valor da parcela para compra em 10 anos: R$' + self.valorParcela10Anos() + ',00');
+            self.simulacoes.push('Valor da parcela para compra em 20 anos: R$' + self.valorParcela20Anos() + ',00');
+        }else{
+            self.simulacoes.push('Valor financiado em 5 anos: R$' + self.valorImovel5Anos() + ',00');
+            var entrada = self.valorImovel5Anos() * 0.2;
+            self.simulacoes.push('Valor da entrada para compra em 5 anos (20% do valor de imóvel): R$' + entrada + ',00');
+            self.simulacoes.push('Valor financiado em 10 anos: R$' + self.valorImovel10Anos() + ',00');
+            entrada = self.valorImovel10Anos() * 0.2;
+            self.simulacoes.push('Valor da entrada para compra em 10 anos (20% do valor de imóvel): R$' + entrada + ',00');
+            self.simulacoes.push('Valor financiado em 20 anos: R$' + self.valorImovel20Anos() + ',00');
+            entrada = self.valorImovel20Anos() * 0.2;
+            self.simulacoes.push('Valor da entrada para compra em 20 anos (20% do valor de imóvel): R$' + entrada + ',00');
+        }
+    }
+    function setarDetalhes(){
+        self.resultadoDetalhes([]);
+        self.dummyObservable.notifySubscribers();  
+        
+        switch (self.tipoDeFamilia()){
+            case 1:
+            case 2:
+                self.resultadoDetalhes.push('Não foram considerados imóveis com mais de 3 quartos.')
+                break;
+            case 3:
+                self.resultadoDetalhes.push('Não foram considerados imóveis com menos de 2 quartos.')
+                break;
+            case 4:
+                self.resultadoDetalhes.push('Não foram considerados imóveis com menos de 3 quartos.')
+                break;
+        }
+
+        var detalhes = self.resultadoDetalhes();
+        detalhes = detalhes.filter(function(item, pos) {
+            return detalhes.indexOf(item) == pos;
+        })
+        self.resultadoDetalhes(detalhes);
+    };
+    function setAnalitycsPage(page){
+        gtag('event', 'page_view', { 'send_to': page });
     }
     
     $(function() {
@@ -480,8 +517,7 @@ function monsterViewModel () {
     });
 
     $( document ).ready(function() {
+        setAnalitycsPage('/pagina-inicial');
         self.deveCarregarMapa(false);
     });
-
-
 }
