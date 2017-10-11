@@ -503,8 +503,14 @@ function monsterViewModel () {
         })
         self.resultadoDetalhes(detalhes);
     };
+
     function setAnalitycsPage(page){
-        gtag('event', 'page_view', { 'send_to': page });
+       //gtag('event', 'page_view', { 'send_to': page });
+       gtag('event', 'acesso', {
+           'send_to': 'UA-107917397-1',
+           'event_category': 'Acesso',
+           'event_label': page
+         });
     }
     
     $(function() {
