@@ -10,7 +10,15 @@
 
       gtag('config', 'UA-107917397-1');
     </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+      ga('create', 'UA-106745347-1', 'auto');
+      ga('send', 'pageview');
+    </script>
 
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -57,7 +65,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
                 <img class="brand-header" src="img/marca_header.svg" data-bind="click: reload">
-                <h1><span class="text-highlighted">Planeje</span> a comprar do seu <span class="text-highlighted">primeiro imóvel</span></h1>
+                <h1><span class="text-highlighted">Planeje</span> a compra do seu <span class="text-highlighted">primeiro imóvel</span></h1>
             </div>
         </div>
     </div>
