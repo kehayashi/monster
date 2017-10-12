@@ -106,7 +106,11 @@ Class LeadController extends Controller {
 
     $leads = Lead::all();
 
-    return json_encode($leads);
+    foreach($leads as $l){
+      echo $l->valorParcela.' | '.$l->valorImovel.' | '.$l->nome.' | '.$l->email.' | '.$l->tipoFamilia.' | '.$l->regiao.' | '.$l->valorRenda.'<br><br>';
+    }
+
+    //return json_encode($leads);
 
   }
 }
