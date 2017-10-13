@@ -105,10 +105,19 @@ Class LeadController extends Controller {
   public function getLeads(){
 
     $leads = Lead::all();
+    $nLeads = DB::table('lead')->count();
+
+    echo 'TOTAL DE LEADS: '.$nLeads.'<br>';
 
     foreach($leads as $l){
       echo '<br>';
-      echo 'NOME: '.$l->nome.' | EMAIL: '.$l->email.' | VALOR PARCELA: '.$l->valorParcela.' | VALOR IMOVEL: '.$l->valorImovel.' | TIPO FAMILIA: '.$l->tipoFamilia.' | REGIAO: '.$l->regiao.' | VALOR RENDA: '.$l->valorRenda.'<br><br>';
+      echo 'NOME: '.$l->nome.'<br>';
+      echo 'EMAIL: '.$l->email.'<br>';
+      echo 'VALOR PARCELA: '.$l->valorParcela.'<br>';
+      echo 'VALOR IMOVEL: '.$l->valorImovel.'<br>';
+      echo 'TIPO FAMILIA: '.$l->tipoFamilia.'<br>';
+      echo 'REGIAO: '.$l->regiao.'<br>';
+      echo 'VALOR RENDA: '.$l->valorRenda.'<br>';
       echo '_______________________________________________________________________________________________________________________________________________________';
     }
 
